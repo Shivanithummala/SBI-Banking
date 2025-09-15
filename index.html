@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SBI Banking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .bank-interface {
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 8px;
+            width: 150px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            background-color: #0066cc;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #004d99;
+        }
+
+        #message {
+            margin-top: 15px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to SBI Banking</h1>
+        <div class="bank-interface">
+            <p>Balance: ₹<span id="balance">0</span></p>
+            
+            <input type="number" id="amount" placeholder="Enter amount" />
+            <button onclick="deposit()">Deposit</button>
+            <button onclick="checkBalance()">Check Balance</button>
+            
+            <p id="message"></p>
+        </div>
+    </div>
+
+    <script>
+        // Singleton BankServer
+        const BankServer = (function() {
+            let instance = null;
+
+            class BankServerClass {
+                #balance = 0; // private field
+
+                constructor() {
+                    if (instance) {
+                        throw new Error("Use getInstance() to get the BankServer instance.");
+                    }
+                }
+
+                deposit(amount) {
+                    if (amount > 0) {
+                        this.#balance += amount;
+                        return Deposited ₹${amount}. New balance is ₹${this.#balance}.;
+                    } else {
+                        return "Please enter a valid amount.";
+                    }
+                }
+
+                getBalance() {
+                    return this.#balance;
+                }
+            }
+
+            return {
+                getInstance: function() {
+                    if (!instance) {
+                        instance = new BankServerClass();
+                    }
+                    return instance;
+                }
+            };
+        })();
+
+        // UI interaction
+        const server = BankServer.getInstance();
+
+        function deposit() {
+            const amount = parseFloat(document.getElementById("amount").value);
+            const message = server.deposit(amount);
+            document.getElementById("message").innerText = message;
+            checkBalance();
+        }
+
+        function checkBalance() {
+            const balance = server.getBalance();
+            document.getElementById("balance").innerText = balance;
+        }
+    </script>
+</body>
+</html>
